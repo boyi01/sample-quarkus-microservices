@@ -2,18 +2,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>pl.piomin.services</groupId>
-        <artifactId>sample-quarkus-microservices</artifactId>
-        <version>1.1</version>
-    </parent>
-
     <artifactId>employee-service</artifactId>
     <groupId>pl.piomin.services</groupId>
-    <version>1.2</version>
+    <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <sonar.moduleKey>${artifactId}</sonar.moduleKey>
+        <quarkus.version>0.21.1</quarkus.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <dependencyManagement>
@@ -42,27 +39,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${surefire-plugin.version}</version>
-            </plugin>
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>${surefire-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                        <configuration>
-                            <systemProperties>
-                                <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
-                            </systemProperties>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
@@ -85,14 +61,6 @@
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-container-image-jib</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-opentelemetry-exporter-otlp</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
             <artifactId>quarkus-junit5</artifactId>
             <scope>test</scope>
         </dependency>
@@ -100,21 +68,6 @@
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-rest-client</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkiverse.pact</groupId>
-            <artifactId>quarkus-pact-provider</artifactId>
-            <version>1.1.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-container-image-jib</artifactId>
         </dependency>
     </dependencies>
 
@@ -145,7 +98,7 @@
                     </plugin>
                     <plugin>
                         <artifactId>maven-failsafe-plugin</artifactId>
-                        <version>${surefire-plugin.version}</version>
+                        <version>2.22.1</version>
                         <executions>
                             <execution>
                                 <goals>
@@ -162,25 +115,6 @@
                     </plugin>
                 </plugins>
             </build>
-        </profile>
-        <profile>
-            <id>openshift</id>
-            <activation>
-                <property>
-                    <name>openshift</name>
-                </property>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>io.quarkus</groupId>
-                    <artifactId>quarkus-openshift</artifactId>
-                </dependency>
-            </dependencies>
-            <properties>
-                <quarkus.kubernetes.deploy>true</quarkus.kubernetes.deploy>
-                <quarkus.profile>openshift</quarkus.profile>
-                <quarkus.container-image.builder>openshift</quarkus.container-image.builder>
-            </properties>
         </profile>
     </profiles>
 
